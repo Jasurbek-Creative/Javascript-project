@@ -1,3 +1,5 @@
+
+
 let products = {
     data: [{
         productName: "Regular White T-shirt",
@@ -45,7 +47,7 @@ let products = {
         productName: "Comfy Gray Pants",
         category: "Bottomwear",
         price: "49",
-        image: "https://unsplash.com/photos/blue-denim-jeans-on-white-textile-ytQeX4iQ7Uk"
+        image: "./image/shirt black.avif"
     },
     ],
 }
@@ -54,7 +56,7 @@ for (let i of products.data) {
     // Create Card
     let card = document.createElement("div")
     // Card should have category
-    card.classList.add("card", "i.category");
+    card.classList.add("card", i.category, "hide");
     // image div
     let imgContainer = document.createElement("div")
     imgContainer.classList.add("image-container")
@@ -72,7 +74,72 @@ for (let i of products.data) {
     name.innerText = i.productName
 
     container.appendChild(name)
-    card.appendChild(container)
 
+    // price
+    let price = document.createElement("h6")
+    price.innerText = "$" + i.price
+    container.appendChild(price)
+
+
+
+
+    card.appendChild(container)
     document.getElementById("products").appendChild(card)
+}
+
+// parameter passed from button (Parameter same as category)
+
+function filterProduct(value) {
+    // Button class code 
+    let buttons = document.querySelectorAll(".button-values")
+    buttons.forEach((button) => {
+        // check if value equals innerText
+        if (value.toUpperCase() == button.innerText.toUpperCase()) {
+            button.classList.add("active")
+
+        } else {
+            button.classList.remove("active")
+        }
+    })
+
+    let elements = document.querySelectorAll(".card")
+    elements.forEach((element) => {
+        // display all cards on "all" button click
+        if (value == "all") {
+            element.classList.remove("hide")
+        } else {
+            //  Check if element contains category class
+            if (element.classList.contains(value)) {
+                element.classList.remove("hide")
+            } else {
+                element.classList.add("hide")
+            }
+        }
+    })
+
+}
+
+// Search button click
+document.getElementById("search").addEventListener("click", () => {
+    let searchInput = document.getElementById("search-input").value
+    let elements = document.querySelectorAll(".product-name")
+    let cards = document.querySelectorAll(".card")
+
+    // loop throught all elements
+
+    elements.forEach((element, index) => {
+        if (element.innerText.includes(searchInput.toUpperCase())) {
+            cards[index].classList.remove('hide')
+        }
+        else {
+            cards[index].classList.add("hide")
+        }
+    })
+
+})
+
+// INitially display all products
+
+window.onload = () => {
+    filterProduct("all")
 }
